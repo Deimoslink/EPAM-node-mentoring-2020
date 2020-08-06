@@ -1,7 +1,9 @@
 import express, {Application, NextFunction, Request, Response} from 'express';
-import {routerUsers} from './api/users';
+import {routerUsers} from './api/users.controller';
 import morgan = require('morgan');
 import * as bodyParser from 'body-parser';
+import {sequelize} from './data-access/db-connection';
+import {User} from './data-models/user.model-definition';
 
 const port = process.env.PORT || 3000;
 const app: Application = express();
@@ -17,11 +19,6 @@ app.use(bodyParser.json());
 app.use('/users', routerUsers);
 
 // Error handling
-app.use((req: Request, res: Response, next: NextFunction) => {
-    const error = new Error('Not found');
-    next(error);
-});
-
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     res.status(404);
     res.json({
@@ -31,4 +28,9 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     });
 });
 
-app.listen(port, () => console.log(`server is running on port ${port}`));
+sequelize.authenticate().then(() => {
+    User.sync().then();
+    app.listen(port, () => console.log(`server is running on port ${port}`));
+}).catch(err => console.log(err));
+
+
