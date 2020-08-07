@@ -6,6 +6,7 @@
   "scripts": {
     "start": "nodemon src/app.ts",
     "populateUsers": "ts-node src/scripts/populate-users.ts",
+    "populateGroups": "ts-node src/scripts/populate-groups.ts",
     "build": "tsc -p ."
   },
   "repository": {

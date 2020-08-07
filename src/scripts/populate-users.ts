@@ -1,7 +1,8 @@
 import {sequelize} from '../data-access/db-connection';
 import {User} from '../data-models/user.model-definition';
+import {UserCreationAttributes} from '../types/user.interface';
 
-const defaultData = [
+const defaultData: Array<UserCreationAttributes> = [
     {
         "login": "Tammi_Neal",
         "password": "password",

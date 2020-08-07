@@ -27,14 +27,14 @@ routerUsers.get('/:userId', async (req: Request, res: Response, next: NextFuncti
 });
 
 routerUsers.post('/', async (req: Request, res: Response, next: NextFunction) => {
-    const data = await userService.addUser(req.body);
+    const data = await userService.addUser(req.body).catch(e => next(e));
     res.status(200).json(data);
 });
 
 routerUsers.patch('/:userId', async (req: Request, res: Response, next: NextFunction) => {
     const targetUser = await userService.getUserById(req.params.userId);
     if (targetUser) {
-        await userService.updateUser(targetUser, req.body);
+        await userService.updateUser(targetUser, req.body).catch(e => next(e));
         const data = await userService.getUserById(req.params.userId);
         res.status(200).json(data);
     } else {
@@ -46,7 +46,7 @@ routerUsers.patch('/:userId', async (req: Request, res: Response, next: NextFunc
 routerUsers.delete('/:userId', async (req: Request, res: Response, next: NextFunction) => {
     const targetUser = await userService.getUserById(req.params.userId);
     if (targetUser) {
-        await userService.deleteUser(req.params.userId);
+        await userService.deleteUser(req.params.userId).catch(e => next(e));
         const data = await userService.getUserById(req.params.userId);
         res.status(200).json(data);
     } else {
