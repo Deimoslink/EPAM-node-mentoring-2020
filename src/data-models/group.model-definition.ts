@@ -24,4 +24,3 @@ export const Group = sequelize.define<GroupInstance>('Group', {
 }, {
     freezeTableName: true
 });
-

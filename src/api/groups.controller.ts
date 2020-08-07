@@ -1,9 +1,12 @@
 import express, {NextFunction, Request, Response, Router} from 'express';
 import {GroupsService} from '../services/groups.service';
 import {GroupInstance} from '../types/group.interface';
+import {createValidator} from 'express-joi-validation';
+import {addUsersToGroupBodySchema} from '../controller-validators/groups.schemas';
 
 export const routerGroups: Router = express.Router();
 
+const validator = createValidator();
 const groupsService: GroupsService = new GroupsService();
 
 
@@ -20,6 +23,11 @@ routerGroups.get('/:groupId', async (req: Request, res: Response, next: NextFunc
 routerGroups.post('/', async (req: Request, res: Response, next: NextFunction) => {
     const data = await groupsService.addGroup(req.body).catch(e => next(e));
     res.status(200).json(data);
+});
+
+routerGroups.post('/:groupId/add-users', validator.body(addUsersToGroupBodySchema), async (req: Request, res: Response, next: NextFunction) => {
+    await groupsService.addUsersToGroup(parseInt(req.params.groupId), req.body.userIds).catch(e => next(e));
+    res.status(200).json();
 });
 
 routerGroups.patch('/:groupId', async (req: Request, res: Response, next: NextFunction) => {

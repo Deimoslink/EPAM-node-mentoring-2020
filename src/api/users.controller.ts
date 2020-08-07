@@ -1,7 +1,7 @@
 import express, {NextFunction, Request, Response, Router} from 'express';
 import {createValidator} from 'express-joi-validation';
 import {UserService} from '../services/users.service';
-import {getUsersQuerySchema} from '../data-models/users.query-schemas';
+import {getUsersQuerySchema} from '../controller-validators/users.schemas';
 import {UserInstance} from '../types/user.interface';
 
 export const routerUsers: Router = express.Router();
@@ -23,6 +23,11 @@ routerUsers.get('/', validator.query(getUsersQuerySchema), async (req: Request, 
 
 routerUsers.get('/:userId', async (req: Request, res: Response, next: NextFunction) => {
     const data = await userService.getUserById(req.params.userId);
+    res.status(200).json(data);
+});
+
+routerUsers.get('/:userId/with-group', async (req: Request, res: Response, next: NextFunction) => {
+    const data = await userService.getUserWithGroup(req.params.userId);
     res.status(200).json(data);
 });
 
