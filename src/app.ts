@@ -32,6 +32,15 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     });
 });
 
+process
+    .on('unhandledRejection', (reason, p) => {
+        console.error(reason, 'Unhandled Rejection at Promise', p);
+    })
+    .on('uncaughtException', err => {
+        console.error(err, 'Uncaught Exception thrown');
+        process.exit(1);
+    });
+
 sequelize.authenticate().then(() => {
     User.sync().then();
     Group.sync().then();
