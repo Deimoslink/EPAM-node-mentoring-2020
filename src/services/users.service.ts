@@ -40,4 +40,8 @@ export class UserService {
     public async getUserWithGroup(id: string): Promise<any> {
         return User.findByPk(id, {include: {model: Group, attributes: ['id', 'name', 'permissions'], through: {attributes: []}}})
     }
+
+    public async findUserByCreds(login: string, password: string): Promise<UserInstance | null> {
+        return User.findOne({where: {login: login, password: password}});
+    }
 }

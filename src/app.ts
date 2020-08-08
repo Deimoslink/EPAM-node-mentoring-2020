@@ -7,6 +7,8 @@ import {User} from './data-models/user.model-definition';
 import {routerGroups} from './api/groups.controller';
 import {Group} from './data-models/group.model-definition';
 import {UserGroup} from './data-models/user-group.model-definiton';
+import {checkAccessToken} from './tokens';
+import {routerAuth} from './api/auth.controller';
 
 const port = process.env.PORT || 3000;
 const app: Application = express();
@@ -19,13 +21,13 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 
 // Routes
-app.use('/users', routerUsers);
-app.use('/groups', routerGroups);
+app.use('', routerAuth);
+app.use('/users', checkAccessToken, routerUsers);
+app.use('/groups', checkAccessToken, routerGroups);
 
 // Error handling
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    res.status(404);
-    res.json({
+    res.status(404).json({
         error: {
             message: err.message
         }
