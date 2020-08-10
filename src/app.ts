@@ -9,6 +9,7 @@ import {Group} from './data-models/group.model-definition';
 import {UserGroup} from './data-models/user-group.model-definiton';
 import {checkAccessToken} from './tokens';
 import {routerAuth} from './api/auth.controller';
+import cors from 'cors';
 
 const port = process.env.PORT || 3000;
 const app: Application = express();
@@ -19,6 +20,9 @@ app.use(morgan('dev'));
 
 // Body parser
 app.use(bodyParser.json());
+
+// CORS
+app.use(cors());
 
 // Routes
 app.use('', routerAuth);
