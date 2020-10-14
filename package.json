@@ -3,11 +3,23 @@
   "version": "1.0.0",
   "description": "",
   "main": "src/app.ts",
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ]
+  },
   "scripts": {
-    "start": "nodemon src/app.ts",
-    "populateUsers": "ts-node src/scripts/populate-users.ts",
-    "populateGroups": "ts-node src/scripts/populate-groups.ts",
-    "build": "tsc -p ."
+    "start": "nodemon -r dotenv/config src/app.ts",
+    "populateUsers": "ts-node -r dotenv/config src/scripts/populate-users.ts",
+    "populateGroups": "ts-node -r dotenv/config src/scripts/populate-groups.ts",
+    "build": "tsc -p .",
+    "test": "jest --setupFiles dotenv/config --coverage --forceExit --maxWorkers=1"
   },
   "repository": {
     "type": "git",
@@ -21,6 +33,7 @@
   "homepage": "https://github.com/Deimoslink/EPAM-node-mentoring-2020#readme",
   "dependencies": {
     "@hapi/joi": "^17.1.1",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-joi-validation": "^4.0.4-beta.0",
     "jsonwebtoken": "^8.5.1",
@@ -33,13 +46,18 @@
     "@types/cors": "^2.8.7",
     "@types/express": "^4.17.7",
     "@types/hapi__joi": "^17.1.4",
+    "@types/jest": "^26.0.14",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/morgan": "^1.9.1",
     "@types/node": "^14.0.27",
     "@types/pg": "^7.14.4",
     "@types/sequelize": "^4.28.9",
+    "@types/supertest": "^2.0.10",
     "cors": "^2.8.5",
+    "jest": "^26.5.3",
     "nodemon": "^2.0.4",
+    "supertest": "^5.0.0",
+    "ts-jest": "^26.4.1",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.7"
   }
